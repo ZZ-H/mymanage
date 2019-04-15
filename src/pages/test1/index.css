@@ -1,0 +1,39 @@
+.container{
+
+    /* box-shadow: 10px 10px 5px #972828; */
+
+    margin: 0 10px;
+    padding: 0 15px;
+    border: 2px solid rgb(235, 231, 231);
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px  rgb(235, 231, 231);
+    
+    /* box-shadow: 2px 2px 3px rgb(235, 231, 231); */
+    
+    
+}
+
+.item{
+    flex: 1;
+   
+    background-color: aquamarine;
+
+}
+.item2{
+    flex: 1;
+    float:right;
+    background-color: aquamarine;
+
+}
+.container2{
+    display: flex;
+    flex-flow: row wrap;
+    width:100%
+}
+
+.container3{
+    display: flex;
+    line-height: 50px;
+    color: #888;
+    font-size: 18;
+}
