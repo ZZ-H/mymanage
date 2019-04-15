@@ -15,6 +15,7 @@
     position: fixed;
     z-index: 3;
     margin-bottom: 50px;
+    background-color:white;
 }
 
 .cardContainer {
@@ -36,6 +37,9 @@
 
 .headLineItem{
     flex:4;
+    color: black;
+    font-weight: 500;
+    font-size: 20px;
    
 }
 
@@ -55,6 +59,7 @@
 
 .content{
     display: flex;
+    margin-top: 15px;
 }
 
 .imageRight{

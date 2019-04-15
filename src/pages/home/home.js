@@ -4,7 +4,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Router, Route, Link, Redirect } from 'react-router-dom'
 import { getListViewData } from '../../redux/actions'
-import { ListView, NavBar, Grid, Icon } from 'antd-mobile';
+import { ListView, NavBar, Grid, Icon, WhiteSpace } from 'antd-mobile';
+import MyIcon from '../../components/myIcon/myIcon'
 import './home.css'
 import Jiantou from '../../assets/right.png'
 
@@ -106,14 +107,6 @@ class Home extends React.Component {
 
   render() {
     const { datalist } = this.state
-    const iconlist = [
-      <Link to="/home/customeradd">新增用户</Link>,
-      '客户列表', '数量统计', '用户管理'
-    ];
-    const gridData = iconlist.map(item => ({
-      icon: (<Icon type={'check-circle'} />),
-      text: item,
-    }));
     const separator = (sectionID, rowID) => (
       <div
         key={`${sectionID}-${rowID}`}
@@ -139,7 +132,7 @@ class Home extends React.Component {
           <div>
             <div className='content' style={{ lineHeight: 1 }}>
               <div style={{ marginBottom: '8px', fontWeight: 'bold', flex:6}}>责任人：{rowData.belongUserName}</div>
-              <div style={{ marginBottom: '8px', fontWeight: 'bold',flex:4}}>级别：{rowData.level}</div>  
+              <div style={{ marginBottom: '8px', fontWeight: 'bold',flex:4}}>级别：{rowData.level==1?(<text>高</text>):(<text>中</text>)}</div>  
               <img className='imageRight' src={Jiantou} alt="icon" onClick={this.handleClick}></img>     
             </div>
 
@@ -152,11 +145,11 @@ class Home extends React.Component {
       <div>
         <div className='headContainer'>
           <NavBar>客户管理系统</NavBar>
-          <Grid data={gridData} columnNum={4} hasLine={false} activeStyle={false} />
+          <MyIcon></MyIcon>
           <div className='danger'>超时预警</div>
           <div className="gab"></div>
         </div>
-        <div style={{ paddingTop: '185px' }}>
+        <div style={{ paddingTop: '210px' }}>
           <ListView
             ref={el => this.lv = el}
             dataSource={this.state.dataSource}
