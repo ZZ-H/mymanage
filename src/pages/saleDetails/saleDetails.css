@@ -8,8 +8,12 @@
     color:grey;
 
 }
-.content{
-    flex:3
+.saleContent{
+    flex:3;
+    /* text-align:left; */
+    /* text-align: center; */
+    /* line-height: 20%; */
+    
 }
 .customerName2{
     text-indent: 10px;

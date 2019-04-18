@@ -1,0 +1,17 @@
+.searchContainer{
+    display: flex;
+     /* background-color: white; */
+}
+
+.searchBar_cl{
+    flex: 4;
+    background-color: white;
+
+}
+
+.search_cl{
+    flex: 1;
+    /* margin-left: 15px;
+    margin-right: 15px; */
+
+}

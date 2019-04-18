@@ -1,104 +1,86 @@
-// import React, {Component} from 'react'
-// import {connect} from 'react-redux'
-// import { List } from 'antd-mobile'
-// import {getCustomerList} from '../../redux/actions'
-// import {
-//     NavBar,
-//     SearchBar,
-//     Button
-//   } from 'antd-mobile'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { getCustomer } from '../../redux/actions'
+import '../../pages/customer/customerList.css'
 
-// const Item = List.Item;
-// const Brief = Item.Brief;
-
-//   class CustomerList extends Component{
-//       state={
-//           customername: '',
-//           cusList: []
-//       }
-//       componentDidMount(){
-//           this.props.getCustomerList()     
-//       }   
-//       handleChange = (name,val) => {
-//           this.setState({
-//               [name]:val
-//           })
-//           console.log(this.state.customername)
-//       }
-//       handelSubmit = () => {
-//         const {list} = this.props.customerList
-//         console.log("list:"+list)
-//         const customername = this.state.customername;
-//         console.log("customername:"+customername)
-//         let clist = list.filter((item) => {
-//             return item.name.indexOf(customername)!==-1
-//         })
-//         this.setState({cusList:clist})
-       
-//         console.log("cusList"+this.state.cusList)
-
-//       }
-//       phoneCall = () => {
-        
-
-//       render(){        
-//         let {list} = this.props.customerList;
-//         if(this.state.cusList&&this.state.cusList.length>0&&this.state.customername!==''){
-//          list=this.state.cusList
-//         }
-//           return(
-//             <div>
-//               <NavBar>客户列表</NavBar>  
-//               <SearchBar placeholder="搜索客户名" onChange={val => {this.handleChange('customername',val)}} onSubmit={this.handelSubmit}/>         
-//               {list && list.map((item,index)=>(              
-//                 <List key={index}>
-//                    <Item
-//                    arrow="horizontal"
-//                    multipleLine
-//                    onClick={() => {}}
-//                    >
-//                    客户名称:{item.name}
-//                    <Brief>级别:{item.level}</Brief>  
-//                    <Brief>过期时间{item.expireTime}</Brief>                
-//                    </Item>
-//                  </List>        
-//                ) )   
-//               }
-//         <div onClick={this.phoneCall}>电话咨询</div>
-//             </div>
-//           )
-//       }
-//   }
-
-//   export default connect(
-//     state => ({customerList: state.customerList}),
-//     {getCustomerList}
-//   )(CustomerList)
-
-
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {getCustomer} from '../../redux/actions'
 
 import {
-    List,NavBar
-   
-  } from 'antd-mobile'
+    List, NavBar, Tabs, SearchBar, Button, Card, WhiteSpace,Modal
+
+} from 'antd-mobile'
+
+const prompt = Modal.prompt;
 
 
-  class CustomerList extends Component{
-      render(){
-        
-          return(
-              <div>
-                  <NavBar>客户统计</NavBar>
-                
-              </div>
-          )
-      }
-  }
+class CustomerList extends Component {
+    handlePeriodChange = () => {
 
-  export default connect(
-    state => ({customer: state.customer}),
-    {getCustomer}
-  )(CustomerList)
+    }
+
+    render() {
+        const tabs = [
+            { title: '基本' },
+            { title: '资质' },
+            { title: '财务' },
+            { title: '其它收入' },
+            { title: '联系人' },
+            { title: '变更历史' },
+        ];
+
+        return (
+            <div>
+                <NavBar>客户列表</NavBar>
+                <div className='searchContainer'>
+                    <div className='searchBar_cl'>
+                        <SearchBar placeholder="Search" maxLength={8} />
+                    </div>
+                    <div className='search_cl'>
+                        <Button type="ghost" inline size="small" >搜索</Button>
+                    </div>
+                </div>
+                <Tabs tabs={tabs} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}></Tabs>
+                <WhiteSpace size='lg' />
+                <Card>
+                    <Card.Header
+                        title="This is title"
+                        title="This "
+
+                        extra={<span>this is extra</span>}
+                    />
+                    <Card.Body>
+                        <div>This is content of `Card`</div>
+                        {/* <Button type="ghost" inline size="small" onCLick='handlePeriodChange'>阶段变更</Button> */}
+                        <Button onClick={() => prompt(
+                            'Login',
+                            'Please input login information',
+                            (login, password) => console.log(`login: ${login}, password: ${password}`),
+                            'login-password',
+                            null,
+                            ['Please input name', 'Please input password'],
+                        )}
+                        >login-password</Button>
+                        <Button type="ghost" inline size="small" >状态变更</Button>
+                        <Button type="ghost" inline size="small" >转移</Button>
+                    </Card.Body>
+
+                </Card>
+
+                <Button onClick={() => prompt(
+                    '更新状态信息',
+                    '阶段变更',
+                    (login, password) => console.log(`login: ${login}, password: ${password}`),
+                    'login-password',
+                    null,
+                    ['Please input name', 'Please input password'],
+                )}
+                >更新状态信息</Button>
+
+            </div>
+        )
+    }
+}
+
+export default connect(
+    state => ({ customer: state.customer }),
+    { getCustomer }
+)(CustomerList)
