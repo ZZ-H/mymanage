@@ -9,7 +9,7 @@ import {
     reqCustomer,
     reqCustomerList,
     reqUserList,
-    reqListViewData
+    reqListViewData   
   } from '../api/index'
 
   const receiveCustomer = (customer) => ({type:RECEIVE_CUSTOMER, data:customer});
@@ -47,33 +47,23 @@ import {
       }
   }
 
-  export const getUserList = () => {
-    return async dispatch => {
-        const response = await reqUserList()
-        const result = response.data
-        console.log(result)
-        if(result.code===0){
-            dispatch(receiveUserList(result.data))
-        }
-    }
-}
-
 export const getListViewData = (p) => {
-  // return async (dispatch) => {
-  //     try{
-  //        const List = await fetch('api?page=0&size=10'); /*获取第一页的10条数据*/
-  //        dispatch(initDataSource(List));
-  //     }catch (error){
-          
-  //     }
-  // }
-
   return async dispatch => {
     const response = await reqListViewData(p)
     const result = response.data
     if(result.code===0){
         dispatch(initDataSource(result.data.list))
     }
-    return result.data.list
+   
+}
+}
+
+export const getUserList = () => {
+  return async dispatch => {
+    const response = await reqUserList()
+    const result = response.data
+    if(result.code===0){
+        dispatch(receiveUserList(result.data))
+    }
 }
 }

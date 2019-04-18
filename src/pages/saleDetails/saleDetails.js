@@ -11,6 +11,7 @@ import {
 
 
 class SaleDetails extends Component {
+  
     render() {
         return (
             <div>

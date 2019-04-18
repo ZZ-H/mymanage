@@ -22,6 +22,8 @@ export const reqCustomer = () => ajax('/home/page')
 
 export const reqCustomerList =() => ajax('/home/page')
 
-export const reqUserList =() => ajax('/home/page')
+//export const reqUserList =() => ajax('/home/page')
 
 export const reqListViewData =(p) => ajax('/home/page',p)
+
+export const reqUserList =() => ajax('/home/page') 

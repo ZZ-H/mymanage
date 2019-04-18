@@ -4,7 +4,8 @@ import {
     AUTH_SUCCESS,
     RECEIVE_CUSTOMER,
     RECEIVE_CUSTOMERLIST,
-    INITDATASOURCE
+    INITDATASOURCE,
+    RECEIVE_USERLIST
   } from './action-types'
 
 const initUser = {
@@ -53,12 +54,22 @@ function customerList(state=initCustomerList, action) {
   //长列表
 const initListData = []
 
-
-
 export const ListViewData = (state = initListData,action) => {
   switch(action.type){
       case INITDATASOURCE:
       return  action.data
+
+    default: 
+      return state
+  }
+}
+
+const userlist = {}
+
+export const UserList = (state = userlist,action) => {
+  switch(action.type){
+      case RECEIVE_USERLIST:
+      return  {...action.data}
 
     default: 
       return state
@@ -70,7 +81,7 @@ export default combineReducers({
     user,
     customer,
     customerList,
-    ListViewData
-
+    ListViewData,
+    UserList
    
   })

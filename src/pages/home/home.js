@@ -95,6 +95,7 @@ class Home extends React.Component {
   }
 
   handleClick = () => {
+    console.log(this.props)
     this.props.history.push('/home/customerDetails')
     console.log("/home/customerDetails")
 
@@ -133,7 +134,7 @@ class Home extends React.Component {
             <div className='content' style={{ lineHeight: 1 }}>
               <div style={{ marginBottom: '8px', fontWeight: 'bold', flex:6}}>责任人：{rowData.belongUserName}</div>
               <div style={{ marginBottom: '8px', fontWeight: 'bold',flex:4}}>级别：{rowData.level==1?(<text>高</text>):(<text>中</text>)}</div>  
-              <img className='imageRight' src={Jiantou} alt="icon" onClick={this.handleClick}></img>     
+              <img className='imageRight' src={Jiantou} alt="icon"></img>     
             </div>
 
           </div>
@@ -145,7 +146,8 @@ class Home extends React.Component {
       <div>
         <div className='headContainer'>
           <NavBar>客户管理系统</NavBar>
-          <MyIcon></MyIcon>
+          <MyIcon history={this.props.history}></MyIcon>
+          {/* <MyIcon></MyIcon> */}
           <div className='danger'>超时预警</div>
           <div className="gab"></div>
         </div>
