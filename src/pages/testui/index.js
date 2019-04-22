@@ -1,131 +1,122 @@
-/* eslint no-dupe-keys: 0 */
-import { ListView } from 'antd-mobile';
 import React from 'react'
+import { List, Switch, Calendar } from 'antd-mobile';
+import enUS from 'antd-mobile/lib/calendar/locale/en_US';
+import zhCN from 'antd-mobile/lib/calendar/locale/zh_CN';
 
+const extra = {
+  '2017/07/15': { info: 'Disable', disable: true },
+};
 
-const data = [
-  {
-    img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-    title: 'Meet hotel',
-    des: '不是所有的兼职汪都需要风吹日晒',
-  },
-  {
-    img: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-    title: 'McDonald\'s invites you',
-    des: '不是所有的兼职汪都需要风吹日晒',
-  },
-  {
-    img: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
-    title: 'Eat the week',
-    des: '不是所有的兼职汪都需要风吹日晒',
-  },
-];
-const NUM_ROWS = 20;
-let pageIndex = 0;
+const now = new Date();
+extra[+new Date(now.getFullYear(), now.getMonth(), now.getDate() + 5)] = { info: 'Disable', disable: true };
+extra[+new Date(now.getFullYear(), now.getMonth(), now.getDate() + 6)] = { info: 'Disable', disable: true };
+extra[+new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7)] = { info: 'Disable', disable: true };
+extra[+new Date(now.getFullYear(), now.getMonth(), now.getDate() + 8)] = { info: 'Disable', disable: true };
 
-function genData(pIndex = 0) {
-  const dataBlob = {};
-  for (let i = 0; i < NUM_ROWS; i++) {
-    const ii = (pIndex * NUM_ROWS) + i;
-    dataBlob[`${ii}`] = `row - ${ii}`;
+Object.keys(extra).forEach((key) => {
+  const info = extra[key];
+  const date = new Date(key);
+  if (!Number.isNaN(+date) && !extra[+date]) {
+    extra[+date] = info;
   }
-  return dataBlob;
-}
+});
 
-export default class Demo extends React.Component {
+export default class Test extends React.Component {
+  originbodyScrollY = document.getElementsByTagName('body')[0].style.overflowY;
+
   constructor(props) {
     super(props);
-    const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-    });
-
     this.state = {
-      dataSource,
-      isLoading: true,
+      en: false,
+      show: false,
+      config: {},
     };
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.rData = genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        isLoading: false,
-      });
-    }, 600);
+  renderBtn(zh, en, config = {}) {
+    config.locale = this.state.en ? enUS : zhCN;
+    console.log('renderBtn')
+    return (
+      <List.Item arrow="horizontal"
+        onClick={() => {
+          document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
+          this.setState({
+            show: true,
+            config,
+          });
+        }}
+      >
+        {this.state.en ? en : zh}
+      </List.Item>
+    );
   }
-  onEndReached = (event) => {
-    
-    if (this.state.isLoading && !this.state.hasMore) {
-      return;
-    }
-    console.log('reach end', event);
-    this.setState({ isLoading: true });
-    setTimeout(() => {
-      this.rData = { ...this.rData, ...genData(++pageIndex) };
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        isLoading: false,
-      });
-    }, 1000);
+
+  changeLanguage = () => {
+    console.log('changeLanguage')
+    this.setState({
+      en: !this.state.en,
+    });
   }
+
+  onSelectHasDisableDate = (dates) => {
+    console.log('onSelectHasDisableDate')
+    console.warn('onSelectHasDisableDate', dates);
+  }
+
+  onConfirm = (startTime, endTime) => {
+    console.log('onConfirm')
+    document.getElementsByTagName('body')[0].style.overflowY = this.originbodyScrollY;
+    this.setState({
+      show: false,
+      startTime,
+      endTime,
+    });
+  }
+
+  onCancel = () => {
+    console.log('onCancel')
+    document.getElementsByTagName('body')[0].style.overflowY = this.originbodyScrollY;
+    this.setState({
+      show: false,
+      startTime: undefined,
+      endTime: undefined,
+    });
+  }
+
+  getDateExtra = date => extra[+date];
 
   render() {
-    const separator = (sectionID, rowID) => (
-      <div
-        key={`${sectionID}-${rowID}`}
-        style={{
-          backgroundColor: '#F5F5F9',
-          height: 8,
-          borderTop: '1px solid #ECECED',
-          borderBottom: '1px solid #ECECED',
-        }}
-      />
-    );
-    let index = data.length - 1;
-    const row = (rowData, sectionID, rowID) => {
-      if (index < 0) {
-        index = data.length - 1;
-      }
-      const obj = data[index--];
-      return (
-        <div key={rowID} style={{ padding: '0 15px' }}>
-          <div
-            style={{
-              lineHeight: '50px',
-              color: '#888',
-              fontSize: 18,
-              borderBottom: '1px solid #F6F6F6',
-            }}
-          >{obj.title}</div>
-          <div style={{ display: '-webkit-box', display: 'flex', padding: '15px ' }}>
-            <img style={{ height: '64px', marginRight: '15px' }} src={obj.img} alt="" />
-            <div style={{ lineHeight: 1 }}>
-              <div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{obj.des}</div>
-              <div><span style={{ fontSize: '30px', color: '#FF6E27' }}>{rowID}</span>¥</div>
-            </div>
-          </div>
-        </div>
-      );
-    };
     return (
-      <ListView
-        ref={el => this.lv = el}
-        dataSource={this.state.dataSource}
-        renderHeader={() => <span>header</span>}
-        renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-          {this.state.isLoading ? 'Loading...' : 'Loaded'}
-        </div>)}
-        renderRow={row}
-        renderSeparator={separator}
-        className="am-list"
-        pageSize={4}
-        useBodyScroll
-        onScroll={() => { console.log('scroll'); }}
-        scrollRenderAheadDistance={500}
-        onEndReached={this.onEndReached}
-        onEndReachedThreshold={10}
-      />
+      <div>
+        <List className="calendar-list" style={{ backgroundColor: 'white' }}>
+          <List.Item className="item" extra={<Switch className="right" checked={!this.state.en} onChange={this.changeLanguage} />}>
+            {this.state.en ? 'Chinese' : '中文'}
+          </List.Item>
+          
+         
+          {this.renderBtn('选择日期区间(快捷)', 'Select Date Range (Shortcut)', { showShortcut: true })}
+          
+          {
+            this.state.startTime &&
+            <List.Item>Time1: {this.state.startTime.toLocaleString()}</List.Item>
+          }
+          {
+            this.state.endTime &&
+            <List.Item>Time2: {this.state.endTime.toLocaleString()}</List.Item>
+          }
+        </List>
+        <Calendar
+          {...this.state.config}
+          visible={this.state.show}
+          onCancel={this.onCancel}
+          onConfirm={this.onConfirm}
+          onSelectHasDisableDate={this.onSelectHasDisableDate}
+          getDateExtra={this.getDateExtra}
+          defaultDate={now}
+          minDate={new Date(+now - 5184000000)}
+          maxDate={new Date(+now + 31536000000)}
+        />
+      </div>
     );
   }
 }
